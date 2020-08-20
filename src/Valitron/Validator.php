@@ -94,6 +94,11 @@ class Validator
      */
     public function __construct($data = array(), $fields = array(), $lang = null, $langDir = null)
     {
+        // Fix non-breaking space
+        $data = array_map(function($item){
+            return str_replace("\xc2\xa0", '', $item);
+        }, $data);
+        
         // Allows filtering of used input fields against optional second array of field names allowed
         // This is useful for limiting raw $_POST or $_GET data to only known fields
         $this->_fields = !empty($fields) ? array_intersect_key($data, array_flip($fields)) : $data;
